@@ -10,19 +10,24 @@ var (
 )
 
 type itemServiceIterface interface {
-	Create(items.Item) (*items.Item, *rest_errors.RestErr)
-	Get(string) (*items.Item, *rest_errors.RestErr)
+	Create(items.Item) (*items.Item, rest_errors.RestErr)
+	Get(string) (*items.Item, rest_errors.RestErr)
 }
 
 type itemService struct{}
 
-func (s *itemService) Create(item items.Item) (*items.Item, *rest_errors.RestErr) {
+func (s *itemService) Create(item items.Item) (*items.Item, rest_errors.RestErr) {
 	if err := item.Save(); err != nil {
 		return nil, err
 	}
 	return &item, nil
 }
 
-func (s *itemService) Get(id string) (*items.Item, *rest_errors.RestErr) {
-	return nil, rest_errors.NewNotImplementedError("not implemented")
+func (s *itemService) Get(id string) (*items.Item, rest_errors.RestErr) {
+	item := items.Item{Id: id}
+	if err := item.Get(); err != nil {
+		return nil, err
+	}
+
+	return &item, nil
 }
